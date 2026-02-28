@@ -1,0 +1,31 @@
+name: Weekly Repo Clean
+on:
+  workflow_dispatch: # Agar bisa klik tombol "Run" manual
+
+jobs:
+  clean-history:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # PENTING: Memberi izin tulis ke repo
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reset History
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Buat branch baru tanpa history
+          git checkout --orphan latest_branch
+          git add -A
+          git commit -m "Auto-clean: Snapshot $(date)"
+          
+          # Hapus branch master lama dan ganti dengan yang baru
+          git branch -D master || true
+          git branch -m master
+          
+          # Push paksa ke origin
+          git push origin master --force
