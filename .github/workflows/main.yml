@@ -23,9 +23,9 @@ jobs:
           git add -A
           git commit -m "Auto-clean: Snapshot $(date)"
           
-          # Hapus branch main lama dan ganti dengan yang baru
-          git branch -D main || true
-          git branch -m main
+          # Hapus branch master lama dan ganti dengan yang baru
+          git branch -D master || true
+          git branch -m master
           
           # Push paksa ke origin
-          git push origin main --force
+          git push origin master --force
